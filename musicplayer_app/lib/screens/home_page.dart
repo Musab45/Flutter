@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:musicplayer_app/screens/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,13 +16,24 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(title: Text('PLAYLIST')),
       drawer: Drawer(
-        backgroundColor: Colors.white.withOpacity(0.3),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 12),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(25),
-            child: Column(),
-          ),
+        child: Column(
+          children: [
+            DrawerHeader(child: Center(child: Icon(Icons.music_note_rounded))),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
+              child: ListTile(
+                title: Text('SETTINGS', style: TextStyle(fontSize: 18)),
+                leading: Icon(Icons.settings),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingsPage()),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
