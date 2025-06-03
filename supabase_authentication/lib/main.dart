@@ -17,6 +17,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Supabase Authentication', home: AuthGate());
+    return MaterialApp(
+      title: 'Supabase Authentication',
+      theme: ThemeData(brightness: Brightness.light),
+      darkTheme: ThemeData(brightness: Brightness.dark),
+      home: AuthGate(),
+    );
   }
 }

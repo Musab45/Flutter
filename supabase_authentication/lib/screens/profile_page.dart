@@ -28,12 +28,31 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text(
+          'Profile',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
+        ),
         actions: [
-          IconButton(onPressed: signout, icon: Icon(Icons.exit_to_app)),
+          IconButton(
+            onPressed: signout,
+            icon: Icon(Icons.blind_sharp, color: Colors.green),
+          ),
         ],
       ),
-      body: Center(child: Text('Email: ${authService.getUserEmail()}')),
+      body: Center(
+        child: Text(
+          'Email: ${authService.getUserEmail()}',
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }

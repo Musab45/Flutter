@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_import
+// ignore_for_file: unnecessary_import, sort_child_properties_last
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -47,7 +47,17 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sign Up')),
+      appBar: AppBar(
+        title: Text(
+          'Sign Up',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey[350],
+          ),
+        ),
+        iconTheme: IconThemeData(color: Colors.green),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -57,9 +67,13 @@ class _SignUpPageState extends State<SignUpPage> {
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
-                label: Text('Email'),
+                label: Text('Email', style: TextStyle(color: Colors.grey)),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.green),
                 ),
               ),
             ),
@@ -68,9 +82,13 @@ class _SignUpPageState extends State<SignUpPage> {
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
-                label: Text('Password'),
+                label: Text('Password', style: TextStyle(color: Colors.grey)),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.green),
                 ),
               ),
             ),
@@ -79,15 +97,29 @@ class _SignUpPageState extends State<SignUpPage> {
             TextField(
               controller: _confirmPasswordController,
               decoration: InputDecoration(
-                label: Text('Confirm Password'),
+                label: Text(
+                  'Confirm Password',
+                  style: TextStyle(color: Colors.grey),
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.green),
                 ),
               ),
             ),
             SizedBox(height: 15),
             // Login Button
-            ElevatedButton(onPressed: signUp, child: Text('Sign Up')),
+            ElevatedButton(
+              onPressed: signUp,
+              child: Text(
+                'Sign Up',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            ),
 
             // Spacing
           ],
