@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:musicplayer_app/providers/theme_provider.dart';
+import 'package:musicplayer_app/widgets/neu_box.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -18,36 +19,32 @@ class _SettingsPageState extends State<SettingsPage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color:
-                    Provider.of<ThemeProvider>(
-                          context,
-                          listen: false,
-                        ).isDarkMode
-                        ? Colors.grey[850]
-                        : Colors.grey[400],
-              ),
-              child: Row(
-                children: [
-                  Text('DARK MODE'),
-                  CupertinoSwitch(
-                    value:
-                        Provider.of<ThemeProvider>(
-                          context,
-                          listen: false,
-                        ).isDarkMode,
-                    onChanged:
-                        (value) =>
-                            Provider.of<ThemeProvider>(
-                              context,
-                              listen: false,
-                            ).toggleTheme(),
-                  ),
-                ],
+            padding: const EdgeInsets.fromLTRB(15, 25, 15, 25),
+            child: NeuBox(
+              child: Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('DARK MODE'),
+                    CupertinoSwitch(
+                      value:
+                          Provider.of<ThemeProvider>(
+                            context,
+                            listen: false,
+                          ).isDarkMode,
+                      onChanged:
+                          (value) =>
+                              Provider.of<ThemeProvider>(
+                                context,
+                                listen: false,
+                              ).toggleTheme(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
