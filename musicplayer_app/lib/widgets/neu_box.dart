@@ -14,7 +14,10 @@ class NeuBox extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color:
+            Provider.of<ThemeProvider>(context).isDarkMode
+                ? Theme.of(context).scaffoldBackgroundColor
+                : Color(0xFFd9d9d9),
         boxShadow: [
           // Dark shadow (bottom-right)
           Provider.of<ThemeProvider>(context).isDarkMode
@@ -28,7 +31,7 @@ class NeuBox extends StatelessWidget {
                 color: Colors.grey.shade500,
                 offset: const Offset(6, 6),
                 blurRadius: 10,
-                spreadRadius: 1,
+                spreadRadius: 0.8,
               ),
           // Light shadow (top-left)
           Provider.of<ThemeProvider>(context).isDarkMode
@@ -39,10 +42,10 @@ class NeuBox extends StatelessWidget {
                 spreadRadius: 0.8,
               )
               : BoxShadow(
-                color: Colors.grey.shade300,
+                color: Color(0xFFd9d9d9),
                 offset: const Offset(-6, -6),
-                blurRadius: 15,
-                spreadRadius: 1,
+                blurRadius: 10,
+                spreadRadius: 0.8,
               ),
         ],
       ),
