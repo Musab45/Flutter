@@ -99,6 +99,8 @@ class PlaylistProvider extends ChangeNotifier {
   void playPreviousSong() async {
     // restart song if less than 2 seconds have elapsed
     if (_currentDuration.inSeconds < 2) {
+      _audioPlayer.stop();
+      play();
     } else {
       if (_currentSongIndex! > 0) {
         currentSongIndex = _currentSongIndex! - 1;

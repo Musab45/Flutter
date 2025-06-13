@@ -99,8 +99,12 @@ class _SongPageState extends State<SongPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('00:00'),
-                            Text('${value.totalDuration.inSeconds.toDouble()}'),
+                            Text(
+                              '${value.currentDuration.inMinutes.toString().padLeft(2, '0')}:${(value.currentDuration.inSeconds % 60).toString().padLeft(2, '0')}',
+                            ),
+                            Text(
+                              '${value.totalDuration.inMinutes.toString().padLeft(2, '0')}:${(value.totalDuration.inSeconds % 60).toString().padLeft(2, '0')}',
+                            ),
                           ],
                         ),
                       ),
@@ -109,7 +113,15 @@ class _SongPageState extends State<SongPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(Icons.skip_previous_rounded, size: 30),
+                            GestureDetector(
+                              onTap: () {
+                                value.playPreviousSong();
+                              },
+                              child: Icon(
+                                Icons.skip_previous_rounded,
+                                size: 40,
+                              ),
+                            ),
                             GestureDetector(
                               onTap: () {
                                 value.pauseOrResume();
@@ -123,7 +135,7 @@ class _SongPageState extends State<SongPage> {
                               onTap: () {
                                 value.playNextSong();
                               },
-                              child: Icon(Icons.skip_next_rounded, size: 30),
+                              child: Icon(Icons.skip_next_rounded, size: 40),
                             ),
                           ],
                         ),
