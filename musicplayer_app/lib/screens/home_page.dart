@@ -71,9 +71,18 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.fromLTRB(15, 25, 15, 25),
                 child: NeuBox(
                   child: ListTile(
-                    title: Text(song.songName),
+                    title: Text(
+                      song.songName,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     subtitle: Text(song.artistName),
-                    leading: Image.network(song.albumArtImagePath),
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(song.albumArtImagePath),
+                    ),
                     onTap: () {
                       goToSong(song, index);
                     },
