@@ -1,3 +1,6 @@
+<img src="https://raw.githubusercontent.com/Musab45/Flutter/main/musicplayer_app/screenshots/home.png" alt="Home" width="300"/>
+<img src="https://raw.githubusercontent.com/Musab45/Flutter/main/musicplayer_app/screenshots/playing now.png" alt="Home" width="300"/>
+
 Flutter and Dart:
 Flutter 3.29.1 • channel stable • https://github.com/flutter/flutter.git
 Framework • revision 09de023485 (3 months ago) • 2025-02-28 13:44:05 -0800
