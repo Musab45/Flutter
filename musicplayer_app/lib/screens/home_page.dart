@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                   child: ListTile(
                     title: Text(song.songName),
                     subtitle: Text(song.artistName),
-                    leading: Image.asset(song.albumArtImagePath),
+                    leading: Image.network(song.albumArtImagePath),
                     onTap: () {
                       goToSong(song, index);
                     },

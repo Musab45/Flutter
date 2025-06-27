@@ -28,125 +28,148 @@ class _SongPageState extends State<SongPage> {
 
         return Scaffold(
           appBar: AppBar(title: Text('PLAYING NOW')),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // header
-                NeuBox(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(
-                            currentSong.albumArtImagePath,
-                            scale: 0.7,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        '${currentSong.songName.toUpperCase()} by ${currentSong.artistName}',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        maxLines: 1,
-                      ),
-                    ],
-                  ),
-                ),
-
-                // actions
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(Icons.shuffle_rounded, size: 25),
-                      Icon(Icons.repeat, size: 25),
-                      Icon(Icons.share, size: 25),
-                    ],
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                  child: Column(
-                    children: [
-                      SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          thumbShape: RoundSliderThumbShape(
-                            enabledThumbRadius: 0,
-                          ),
-                        ),
-                        child: Slider(
-                          activeColor: Colors.green,
-                          value: value.currentDuration.inSeconds.toDouble(),
-                          min: 0,
-                          max: value.totalDuration.inSeconds.toDouble(),
-                          onChanged: (double time) {},
-                          onChangeEnd: (double time) {
-                            value.seek(Duration(seconds: time.toInt()));
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(25, 12, 25, 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${value.currentDuration.inMinutes.toString().padLeft(2, '0')}:${(value.currentDuration.inSeconds % 60).toString().padLeft(2, '0')}',
-                            ),
-                            Text(
-                              '${value.totalDuration.inMinutes.toString().padLeft(2, '0')}:${(value.totalDuration.inSeconds % 60).toString().padLeft(2, '0')}',
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                value.playPreviousSong();
-                              },
-                              child: Icon(
-                                Icons.skip_previous_rounded,
-                                size: 40,
+          body:
+              context.watch<PlaylistProvider>().isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // header
+                        NeuBox(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: Image.network(
+                                    currentSong.albumArtImagePath,
+                                    scale: 0.7,
+                                  ),
+                                ),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                value.pauseOrResume();
-                              },
-                              child:
-                                  value.isPlaying
-                                      ? Icon(Icons.pause, size: 60)
-                                      : Icon(Icons.play_arrow, size: 60),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                value.playNextSong();
-                              },
-                              child: Icon(Icons.skip_next_rounded, size: 40),
-                            ),
-                          ],
+                              SizedBox(height: 5),
+                              Text(
+                                '${currentSong.songName.toUpperCase()} by ${currentSong.artistName}',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                maxLines: 1,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+
+                        // actions
+                        Padding(
+                          padding: const EdgeInsets.all(25.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(Icons.shuffle_rounded, size: 25),
+                              Icon(Icons.repeat, size: 25),
+                              Icon(Icons.share, size: 25),
+                            ],
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                          child: Column(
+                            children: [
+                              SliderTheme(
+                                data: SliderTheme.of(context).copyWith(
+                                  thumbShape: RoundSliderThumbShape(
+                                    enabledThumbRadius: 0,
+                                  ),
+                                ),
+                                child: Slider(
+                                  activeColor: Colors.green,
+                                  value:
+                                      value.currentDuration.inSeconds
+                                          .toDouble(),
+                                  min: 0,
+                                  max: value.totalDuration.inSeconds.toDouble(),
+                                  onChanged: (double time) {},
+                                  onChangeEnd: (double time) {
+                                    value.seek(Duration(seconds: time.toInt()));
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                  25,
+                                  12,
+                                  25,
+                                  12,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '${value.currentDuration.inMinutes.toString().padLeft(2, '0')}:${(value.currentDuration.inSeconds % 60).toString().padLeft(2, '0')}',
+                                    ),
+                                    Text(
+                                      '${value.totalDuration.inMinutes.toString().padLeft(2, '0')}:${(value.totalDuration.inSeconds % 60).toString().padLeft(2, '0')}',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                  50,
+                                  12,
+                                  50,
+                                  12,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        value.playPreviousSong();
+                                      },
+                                      child: Icon(
+                                        Icons.skip_previous_rounded,
+                                        size: 40,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        value.pauseOrResume();
+                                      },
+                                      child:
+                                          value.isPlaying
+                                              ? Icon(Icons.pause, size: 60)
+                                              : Icon(
+                                                Icons.play_arrow,
+                                                size: 60,
+                                              ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        value.playNextSong();
+                                      },
+                                      child: Icon(
+                                        Icons.skip_next_rounded,
+                                        size: 40,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 50),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(height: 50),
-              ],
-            ),
-          ),
         );
       },
     );

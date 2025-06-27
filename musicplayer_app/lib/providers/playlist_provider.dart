@@ -1,31 +1,16 @@
-// ignore_for_file: prefer_final_fields
+// ignore_for_file: prefer_final_fields, unused_field
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:musicplayer_app/models/song.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PlaylistProvider extends ChangeNotifier {
+  // supabase client instance
+  final _supabase = Supabase.instance.client;
+
   //playlist of songs
-  final List<Song> _playlist = [
-    Song(
-      songName: '9',
-      artistName: 'Drake',
-      albumArtImagePath: 'assets/images/9.jpg',
-      audioPath: 'audios/9_audio.mp3',
-    ),
-    Song(
-      songName: 'All Eyes on Me',
-      artistName: '2Pac',
-      albumArtImagePath: 'assets/images/alleyesonme.jpg',
-      audioPath: 'audios/alleyesonme_audio.mp3',
-    ),
-    Song(
-      songName: 'Solo',
-      artistName: 'Future',
-      albumArtImagePath: 'assets/images/solo.jpg',
-      audioPath: 'audios/solo_audio.mp3',
-    ),
-  ];
+  List<Song> _playlist = [];
 
   // current playing song
   int? _currentSongIndex;
@@ -39,19 +24,41 @@ class PlaylistProvider extends ChangeNotifier {
   Duration _currentDuration = Duration.zero;
   Duration _totalDuration = Duration.zero;
 
-  // constructor
-  PlaylistProvider() {
-    listenToDuration();
-  }
-
   // initially is nor playing
   bool _isPlaying = false;
 
+  // loading state for api
+  bool _isLoading = false;
+
+  // constructor
+  PlaylistProvider() {
+    listenToDuration();
+    fetchPlaylist();
+  }
+
+  // fetch playlist from Supabase
+  Future<void> fetchPlaylist() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final data = await _supabase.from('songs').select();
+
+      // converting List<Map<String, dynamic>> to List<Song>
+      _playlist = data.map((item) => Song.fromMap(item)).toList();
+    } catch (e) {
+      print('Error fetching playlist: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   // play song
   void play() async {
-    final String path = _playlist[_currentSongIndex!].audioPath;
-    await _audioPlayer.stop(); // stop if any song is playing
-    await _audioPlayer.play(AssetSource(path)); // play the current song
+    if (currentSongIndex == null) return;
+    final String url = _playlist[_currentSongIndex!].audioPath;
+    await _audioPlayer.stop();
+    await _audioPlayer.play(UrlSource(url));
     _isPlaying = true;
     notifyListeners();
   }
@@ -98,7 +105,7 @@ class PlaylistProvider extends ChangeNotifier {
   // play previous song
   void playPreviousSong() async {
     // restart song if less than 2 seconds have elapsed
-    if (_currentDuration.inSeconds < 2) {
+    if (_currentDuration.inSeconds > 2) {
       _audioPlayer.stop();
       play();
     } else {
@@ -136,6 +143,7 @@ class PlaylistProvider extends ChangeNotifier {
   bool get isPlaying => _isPlaying;
   Duration get currentDuration => _currentDuration;
   Duration get totalDuration => _totalDuration;
+  bool get isLoading => _isLoading;
 
   // setters
   set currentSongIndex(int? newIndex) {

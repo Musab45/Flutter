@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:musicplayer_app/models/api.dart';
 import 'package:musicplayer_app/providers/playlist_provider.dart';
 import 'package:musicplayer_app/providers/theme_provider.dart';
 import 'package:musicplayer_app/screens/home_page.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async {
+  Api _api = Api();
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(url: _api.supabaseUrl, anonKey: _api.supabaseApi);
+
   runApp(
     MultiProvider(
       providers: [
@@ -27,3 +35,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+final supabase = Supabase.instance.client;
