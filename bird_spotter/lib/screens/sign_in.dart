@@ -1,4 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:bird_spotter/auth/auth_service.dart';
 import 'package:bird_spotter/providers/theme_provider.dart';
+import 'package:bird_spotter/screens/home.dart';
 import 'package:bird_spotter/screens/intro.dart';
 import 'package:bird_spotter/screens/sign_up.dart';
 import 'package:bird_spotter/widgets/action_button.dart';
@@ -14,8 +18,31 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final authService = AuthService();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+
+  // login
+  void login() async {
+    final email = emailController.text;
+    final password = passwordController.text;
+    try {
+      await authService.signInWithEmailPassword(email, password);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e', style: TextStyle(color: Colors.green)),
+            backgroundColor: Colors.transparent,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +112,12 @@ class _SignInState extends State<SignIn> {
                 // action button
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 60, 0, 0),
-                  child: ActionButton(text: 'Sign In', onPressed: () {}),
+                  child: ActionButton(
+                    text: 'Sign In',
+                    onPressed: () {
+                      login();
+                    },
+                  ),
                 ),
 
                 // navigation to sign up

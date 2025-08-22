@@ -1,4 +1,8 @@
+// ignore_for_file: prefer_final_fields, use_build_context_synchronously
+
+import 'package:bird_spotter/auth/auth_service.dart';
 import 'package:bird_spotter/providers/theme_provider.dart';
+import 'package:bird_spotter/screens/home.dart';
 import 'package:bird_spotter/screens/intro.dart';
 import 'package:bird_spotter/screens/sign_in.dart';
 import 'package:bird_spotter/widgets/action_button.dart';
@@ -14,9 +18,38 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-  var confirmPasswordController = TextEditingController();
+  final authService = AuthService();
+  var _emailController = TextEditingController();
+  var _passwordController = TextEditingController();
+  var _confirmPasswordController = TextEditingController();
+
+  // sign up
+  Future<void> signUp() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
+
+    if (confirmPassword != password) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Passwords do not match!')));
+      return;
+    }
+
+    try {
+      await authService.signUpWithEmailPassword(email, password);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +101,7 @@ class _SignUpState extends State<SignUp> {
                 InputField(
                   name: 'Email',
                   hint_text: 'your@email.com',
-                  controller: emailController,
+                  controller: _emailController,
                   hide_text: false,
                 ),
 
@@ -79,7 +112,7 @@ class _SignUpState extends State<SignUp> {
                 InputField(
                   name: 'Password',
                   hint_text: '* * * * * *',
-                  controller: passwordController,
+                  controller: _passwordController,
                   hide_text: true,
                 ),
 
@@ -90,14 +123,19 @@ class _SignUpState extends State<SignUp> {
                 InputField(
                   name: 'Confirm Password',
                   hint_text: '* * * * * *',
-                  controller: confirmPasswordController,
+                  controller: _confirmPasswordController,
                   hide_text: true,
                 ),
 
                 // action button
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 60, 0, 0),
-                  child: ActionButton(text: 'Sign Up', onPressed: () {}),
+                  child: ActionButton(
+                    text: 'Sign Up',
+                    onPressed: () {
+                      signUp();
+                    },
+                  ),
                 ),
 
                 // navigation to sign up
